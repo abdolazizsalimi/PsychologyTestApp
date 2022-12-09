@@ -7,7 +7,7 @@ class DeleteTestData {
     title: string
 }
 
-export class DeletePostInput {
+export class DeleteTestInput {
 
     @ApiProperty({ type: DeleteTestData })
     @Type(() => DeleteTestData)

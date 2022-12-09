@@ -11,16 +11,10 @@ class CreateTestData {
     title: string
 
     @ApiProperty()
-    @IsString()
     test_id: number
 
     @ApiProperty()
-    @IsString()
     grade: number
-
-    @ApiProperty()
-    @IsUUID()
-    userId: string
 
 
 }

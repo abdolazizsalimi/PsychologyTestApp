@@ -28,9 +28,9 @@ model questions {
 }
 
 model test {
-  id_test Int    @id
+  id_test Int
   grade   Int
-  title   String @db.VarChar(45)
+  title   String @id @db.VarChar(45)
 }
 
 model user {
