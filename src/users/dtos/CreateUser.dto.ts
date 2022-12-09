@@ -1,5 +1,7 @@
+import { Type } from "class-transformer"
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, MinLength, ValidateNested } from "class-validator";
+
 
 export class CreateUserDto{
     @ApiProperty()
@@ -9,7 +11,15 @@ export class CreateUserDto{
 
     @ApiProperty()
     @IsString()
-    fullname: string
+    firstname: string
+
+    @ApiProperty()
+    @IsString()
+    lastname: string
+
+    @ApiProperty()
+    @IsString()
+    gender: string
 
     @ApiProperty()
     @IsString()
@@ -18,12 +28,12 @@ export class CreateUserDto{
 
     @ApiProperty()
     @IsString()
+    age: number
+
+    @ApiProperty()
+    @IsString()
     @MinLength(6)
     confirmPassword: string
-
-    // @ApiProperty({ enum: Role })
-    // @IsEnum(Role)
-    // role: Role
 
     @ApiProperty()
     @IsString()
@@ -33,4 +43,11 @@ export class CreateUserDto{
     @ApiProperty()
     @IsString()
     phoneNumber: string
+}
+
+export class CreateUserInput {
+    @ApiProperty({ type: CreateUserDto })
+    @Type(() => CreateUserDto)
+    @ValidateNested()
+    data: CreateUserDto
 }

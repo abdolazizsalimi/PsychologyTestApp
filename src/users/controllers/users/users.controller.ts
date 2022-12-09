@@ -1,9 +1,10 @@
 import { Controller, Get, Req, Res , Post, Body, Param, UsePipes, ValidationPipe} from '@nestjs/common';
-import {Request,Response} from 'express';
-import { CreateUserDto } from '../../dtos/CreateUser.dto';
 
 @Controller('users')
 export class UsersController {
+
+
+
 
 @Get()
  getUsers(){
@@ -43,17 +44,8 @@ export class UsersController {
 //     response.send('created')
 // }
 
-@Post('create')
-@UsePipes(new ValidationPipe())
-createUser(@Body() UserData : CreateUserDto ){
-    console.log(UserData)
-    return {};  
-}
 
-// @Get(':id')
-// getuserbyid(@Req() request : Request , @Res() response : Response){
-//     console.log(request.params)
-//     response.send('id passed')
+
 
 
 // }

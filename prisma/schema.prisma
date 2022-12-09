@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id_admin Int    @id
+  username String @db.VarChar(64)
+}
+
+model doctor {
+  id_doctor      Int                   @id
+  dr_name        String                @db.VarChar(45)
+  dr_lastname    String                @db.VarChar(45)
+  specialization doctor_specialization
+  background     Int?
+  dr_gender      doctor_dr_gender?
+}
+
+model questions {
+  id_question Int     @id
+  grade       Decimal @db.Decimal(4, 0)
+  value       String  @unique(map: "value_UNIQUE") @db.VarChar(255)
+}
+
+model test {
+  id_test Int @id
+  grade   Int
+}
+
+model user {
+  id_user     Int       @id @unique(map: "id_user_UNIQUE")
+  firstname   String    @db.VarChar(45)
+  lastname    String    @db.VarChar(45)
+  age         Int
+  birthday    DateTime? @db.Date
+  gender      String    @db.VarChar(1)
+  email       String    @unique(map: "email_UNIQUE") @db.VarChar(64)
+  username    String    @unique(map: "username_UNIQUE") @db.VarChar(45)
+  password    String    @db.VarChar(256)
+  phonenumber String    @unique(map: "phonenumber_UNIQUE") @db.VarChar(45)
+  
+}
+
+enum doctor_specialization {
+  general
+  subspecialty
+  Specialty
+}
+
+enum doctor_dr_gender {
+  F
+  M
+}
