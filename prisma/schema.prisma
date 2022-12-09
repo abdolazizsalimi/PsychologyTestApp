@@ -28,8 +28,9 @@ model questions {
 }
 
 model test {
-  id_test Int @id
+  id_test Int    @id
   grade   Int
+  title   String @db.VarChar(45)
 }
 
 model user {
@@ -43,7 +44,6 @@ model user {
   username    String    @unique(map: "username_UNIQUE") @db.VarChar(45)
   password    String    @db.VarChar(256)
   phonenumber String    @unique(map: "phonenumber_UNIQUE") @db.VarChar(45)
-  
 }
 
 enum doctor_specialization {
