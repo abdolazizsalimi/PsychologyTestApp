@@ -35,11 +35,11 @@ export class AuthService {
 
       var hash = crypto.pbkdf2Sync(input.password, 'salt', 1000, 64 , `sha512` ).toString('hex');
 
-      if(hash == Userdata.password){
-        console.log(hash)
-        console.log(Userdata.password)
+      // if(hash == Userdata.password){
+      //   console.log(hash)
+      //   console.log(Userdata.password)
 
-      }
+      // }
       
 
       if (hash === Userdata.password ){
