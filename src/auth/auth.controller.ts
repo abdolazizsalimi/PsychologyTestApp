@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req , Request } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { CreateUserInput } from 'src/users/dtos/CreateUser.dto';
 import { LoginInputDto } from 'src/users/dtos/LoginUser.dto';
@@ -7,32 +7,29 @@ import { AuthService } from './auth.service';
 
 @Controller('auth/')
 export class AuthController {
-    constructor(private authservice:AuthService){}
-    @Get()
-    getAuth(): string {
-      return this.authservice.getAuth();
-    }
-    
+  constructor(private authservice: AuthService) {}
+  @Get()
+  getAuth(): string {
+    return this.authservice.getAuth();
+  }
+
   @Post('login')
-  async login(@Body() input : LoginInputDto) {
-      console.log(input)
+  async login(@Body() input: LoginInputDto) {
+    console.log(input);
     return this.authservice.login(input);
   }
 
-
-  @Post("createUser")
+  @Post('createUser')
   @ApiBody({ type: CreateUserInput })
   @ApiResponse({ status: 200 })
   async createUser(@Body() input: CreateUserInput) {
-      return await this.authservice.createUser(input)
+    return await this.authservice.createUser(input);
   }
 
-  @Post("updateUser")
+  @Post('updateUser')
   @ApiBody({ type: UpdateUserInput })
   @ApiResponse({ status: 200 })
   async updateUser(@Body() input: UpdateUserInput) {
-      return await this.authservice.updateUser(input)
+    return await this.authservice.updateUser(input);
   }
-
-
 }
