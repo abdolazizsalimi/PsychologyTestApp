@@ -8,11 +8,7 @@ import { AuthService } from './auth.service';
 @Controller('auth/')
 export class AuthController {
     constructor(private authservice:AuthService){}
-    @Get()
-    getAuth(): string {
-      return this.authservice.getAuth();
-    }
-    
+
   @Post('login')
   async login(@Body() input : LoginInputDto) {
       console.log(input)
@@ -33,6 +29,5 @@ export class AuthController {
   async updateUser(@Body() input: UpdateUserInput) {
       return await this.authservice.updateUser(input)
   }
-
 
 }

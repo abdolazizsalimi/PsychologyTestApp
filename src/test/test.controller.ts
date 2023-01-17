@@ -9,11 +9,11 @@ export class TestController {
     constructor(private testservice:TestService){}
 
 @Post('creatTest')
-@ApiBody({ type: CreateTestInput })
+@ApiBody({ type: CreateTestInput  })
 @ApiResponse({ status: 200 })
-async createTest(@Body() input: CreateTestInput) {
+async createTest(@Body() input: CreateTestInput ) {
     this.testservice.creat_test(input)
-    console.log('post created');
+    console.log('Test created');
     
 }
 
@@ -25,6 +25,10 @@ async deletTest(@Body() input: DeleteTestInput) {
     console.log('post created');
     
 }
+
+
+
+
 
 
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service'
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateTestInput } from './dto/creat-test.input';
 import { DeleteTestInput } from './dto/delet-test.input';
 
@@ -8,11 +8,12 @@ export class TestService {
 
     constructor(
         private prisma: PrismaService,
+    
         
     ) { }
     
 
-    async creat_test (input : CreateTestInput){
+    async creat_test (input : CreateTestInput ){
         const {data} = input
 
 
@@ -30,11 +31,14 @@ export class TestService {
             }
 
         }
-
+        
         )
 
         return test
     }
+
+
+
 
     async delet_test(input:DeleteTestInput) {
         const {data} = input
@@ -47,13 +51,9 @@ export class TestService {
                 }
               }
         )
+        return delet
         
     }
-
-
-
-
-
 
 
 }
