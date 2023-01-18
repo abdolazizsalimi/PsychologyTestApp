@@ -84,6 +84,7 @@ model user {
   username       String           @unique(map: "username_UNIQUE") @db.VarChar(45)
   password       String           @db.VarChar(256)
   phonenumber    String           @unique(map: "phonenumber_UNIQUE") @db.VarChar(45)
+  role           user_role        @default(member)
   user_questions user_questions[]
   user_test      user_test[]
 }
@@ -129,4 +130,9 @@ enum doctor_specialization {
 enum doctor_dr_gender {
   F
   M
+}
+
+enum user_role {
+  member
+  admin
 }

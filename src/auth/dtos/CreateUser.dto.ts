@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString, MinLength, ValidateNested } from "class-validator";
+import { IsEmail, isEnum, IsNotEmpty, IsString, MinLength, ValidateNested } from "class-validator";
+import { user_role } from "@prisma/client";
 
 
 export class CreateUserDto{
@@ -43,6 +44,10 @@ export class CreateUserDto{
     @ApiProperty()
     @IsString()
     phoneNumber: string
+
+    @ApiProperty()
+    role : user_role
+     
 }
 
 export class CreateUserInput {

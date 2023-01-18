@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { user_role } from "@prisma/client";
 
 import { Type } from "class-transformer";
 import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, MinLength, Validate, ValidateNested } from "class-validator";
@@ -51,6 +52,12 @@ class ReadUserData {
     @IsOptional()
     @IsString()
     phoneNumber?: string
+
+
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    role ?: user_role
 
 }
 

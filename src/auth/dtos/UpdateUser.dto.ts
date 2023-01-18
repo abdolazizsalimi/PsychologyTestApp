@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { user_role } from "@prisma/client";
 import { Type } from "class-transformer";
 import { IsEmail, IsString, IsUUID, ValidateNested } from "class-validator";
 
@@ -24,6 +25,9 @@ class UpdateUserData {
     @ApiProperty()
     @IsString()
     phoneNumber: string
+
+    @ApiProperty()
+    role : user_role
 }
 
 

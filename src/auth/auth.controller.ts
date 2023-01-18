@@ -1,15 +1,18 @@
-import { Body, Controller, Get, Post, Req , Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req , Request, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
-import { CreateUserInput } from 'src/users/dtos/CreateUser.dto';
-import { LoginInputDto } from 'src/users/dtos/LoginUser.dto';
-import { ReadUserInput } from 'src/users/dtos/read-user.dto';
-import { UpdateUserInput } from 'src/users/dtos/UpdateUser.dto';
+import { CreateUserInput } from 'src/auth/dtos/CreateUser.dto';
+import { LoginInputDto } from 'src/auth/dtos/LoginUser.dto';
+import { ReadUserInput } from 'src/auth/dtos/read-user.dto';
+import { UpdateUserInput } from 'src/auth/dtos/UpdateUser.dto';
 import { AuthService } from './auth.service';
+
 
 @Controller('auth/')
 export class AuthController {
     constructor(private authservice:AuthService){}
 
+
+  // @UseGuards(JwtAuthGuard)
   @Post('login')
   async login(@Body() input : LoginInputDto) {
       console.log(input)

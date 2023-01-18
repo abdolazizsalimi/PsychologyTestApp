@@ -3,7 +3,6 @@ import { Prisma } from '@prisma/client';
 import cleanDeep from 'clean-deep';
 import { createPaginationResult } from 'src/common/input/paganation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ReadUserInput } from 'src/users/dtos/read-user.dto';
 import { CreatDoctorInput } from './dto/creat-doctor.dto';
 import { DeleteDoctorInput } from './dto/delet-doctor.dto';
 import { ReadDoctorInput } from './dto/read-doctor.dto';

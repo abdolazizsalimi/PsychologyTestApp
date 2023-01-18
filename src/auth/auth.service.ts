@@ -1,22 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { LoginInputDto } from 'src/users/dtos/LoginUser.dto';
+import { LoginInputDto } from 'src/auth/dtos/LoginUser.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserInput } from 'src/users/dtos/CreateUser.dto';
+import { CreateUserInput } from 'src/auth/dtos/CreateUser.dto';
 import { randomInt } from 'crypto';
-import { UpdateUserInput } from 'src/users/dtos/UpdateUser.dto';
-import { ReadUserInput } from 'src/users/dtos/read-user.dto';
-import { Prisma } from '@prisma/client';
+import { UpdateUserInput } from 'src/auth/dtos/UpdateUser.dto';
+import { ReadUserInput } from 'src/auth/dtos/read-user.dto';
+import { Prisma, user_role } from '@prisma/client';
 import { createPaginationResult } from 'src/common/input/paganation.input';
 import cleanDeep from 'clean-deep';
+import { JwtService } from '@nestjs/jwt';
+import { genUID } from 'src/utils/gUID';
 var crypto = require('crypto'); 
+
 
 
 
 @Injectable()
 export class AuthService {
-
+  
   constructor(
     private prisma: PrismaService,
+    private readonly jwtService: JwtService,
     
 ) { }
 
@@ -27,8 +31,6 @@ export class AuthService {
 
     async login(input :LoginInputDto) {
       
-     
-
       const Userdata = await this.prisma.user.findUnique({
         where: {
           username:input.username,
@@ -37,23 +39,23 @@ export class AuthService {
 
       var hash = crypto.pbkdf2Sync(input.password, 'salt', 1000, 64 , `sha512` ).toString('hex');
 
-      if(hash == Userdata.password){
-        console.log(hash)
-        console.log(Userdata.password)
-
-      }
-      
-
       if (hash === Userdata.password ){
         const payload = {
             username: input.username,
             password: input.password,
+            id :genUID()
           };
+          
           return {
-          //   access_token: this.jwtService.sign(payload),
+            access_token: this.jwtService.sign(payload),
             user: payload,
-             
           };
+
+      } else {
+
+        return {
+          error : 'password is wrong ! '
+        }
 
       }
 
@@ -66,9 +68,7 @@ export class AuthService {
       const username = data.username.toLowerCase()
       const updateUser = await this.prisma.user.update({
         where: {
-
           username : username ,
-          
         },
         data: {
           firstname: data.firstname.toLocaleLowerCase(), 
@@ -104,7 +104,8 @@ async createUser(input: CreateUserInput) {
           email: email,
           age: data.age,
           gender: data.gender,
-          id_user: randomInt(10000000)
+          id_user: randomInt(10000000),
+          role : data.role
       }
   })
   return user
@@ -121,7 +122,8 @@ async readUser(input: ReadUserInput) {
       email: rawWhere.email,
       lastname : rawWhere.lastname,
       firstname : rawWhere.firstname,
-      phonenumber: rawWhere.phoneNumber
+      phonenumber: rawWhere.phoneNumber,
+      role : rawWhere.role
   };
 
   whereClause = cleanDeep(whereClause);
@@ -136,10 +138,14 @@ async readUser(input: ReadUserInput) {
 }
 
 
-
-
-
-
+// verify(token: string): boolean {
+//   try {
+//     this.jwtService.verify(token.split(' ')[1]);
+//   } catch (err) {
+//     return false;
+//   }
+//   return true;
+// }
 
 
 private async createHashedPassword(password: string) {
@@ -170,8 +176,5 @@ if (newPassword != confirmPassword)
 }
 
 
-
-
-
-    
 }
+
