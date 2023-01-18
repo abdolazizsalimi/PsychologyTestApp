@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { LoginInputDto } from 'src/users/dtos/LoginUser.dto';
-import { PrismaService } from '../prisma/prisma.service'
-import { v4 as uuidv4 } from 'uuid';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserInput } from 'src/users/dtos/CreateUser.dto';
 import { randomInt } from 'crypto';
 import { UpdateUserInput } from 'src/users/dtos/UpdateUser.dto';
-
+import { ReadUserInput } from 'src/users/dtos/read-user.dto';
+import { Prisma } from '@prisma/client';
+import { createPaginationResult } from 'src/common/input/paganation.input';
+import cleanDeep from 'clean-deep';
 var crypto = require('crypto'); 
 
 
@@ -110,10 +112,36 @@ async createUser(input: CreateUserInput) {
 
 
 
+async readUser(input: ReadUserInput) {
+  const rawWhere = input.data || {};
+
+  let whereClause: Prisma.userWhereInput = {
+      id_user: rawWhere.id,
+      username: rawWhere.username,
+      email: rawWhere.email,
+      lastname : rawWhere.lastname,
+      firstname : rawWhere.firstname,
+      phonenumber: rawWhere.phoneNumber
+  };
+
+  whereClause = cleanDeep(whereClause);
+
+  const count = this.prisma.user.count({ where: whereClause });
+  const entity = this.prisma.user.findMany({
+      where: whereClause,
+      ...input?.sortBy?.convertToPrismaFilter(),
+      ...input?.pagination?.convertToPrismaFilter(),
+  });
+  return createPaginationResult({ count, entity });
+}
 
 
 
-      
+
+
+
+
+
 private async createHashedPassword(password: string) {
   return await crypto.pbkdf2Sync(password, 'salt', 1000, 64 ,`sha512`).toString('hex');
 }

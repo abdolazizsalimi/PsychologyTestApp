@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import cleanDeep from 'clean-deep';
+import { createPaginationResult } from 'src/common/input/paganation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ReadUserInput } from 'src/users/dtos/read-user.dto';
 import { CreatDoctorInput } from './dto/creat-doctor.dto';
 import { DeleteDoctorInput } from './dto/delet-doctor.dto';
+import { ReadDoctorInput } from './dto/read-doctor.dto';
 import { UpdateDoctorInput } from './dto/update-doctor.dto';
 
 @Injectable()
@@ -76,6 +81,38 @@ export class DoctorService {
   
   
       }
+
+
+
+
+      
+async readDoctor(input: ReadDoctorInput) {
+    const rawWhere = input.data || {};
+  
+    let whereClause: Prisma.doctorWhereInput = {
+      dr_name : rawWhere.doctor_name , 
+      dr_lastname: rawWhere.doctor_lastname,
+      address : rawWhere.address,
+      id_doctor : rawWhere.id,
+      specialization : rawWhere.specialization,
+      dr_gender : rawWhere.doctor_gender,
+      background : rawWhere.background ,
+      description : rawWhere.doctor_description , 
+      phoneNumber : rawWhere.phonenumber
+
+    };
+  
+    whereClause = cleanDeep(whereClause);
+  
+    const count = this.prisma.user.count({ where: whereClause });
+    const entity = this.prisma.user.findMany({
+        where: whereClause,
+        ...input?.sortBy?.convertToPrismaFilter(),
+        ...input?.pagination?.convertToPrismaFilter(),
+    });
+    return createPaginationResult({ count, entity });
+  }
+  
 
     
     

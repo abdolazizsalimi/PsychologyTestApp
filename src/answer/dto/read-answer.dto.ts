@@ -1,31 +1,32 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsBoolean, IsEmail,IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
+import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { PaginationData } from "src/common/input/paganation.input";
 import { SortByData } from "src/common/input/sort-data.dto";
 
-class ReadTestData {
+class ReadAnswerData {
 
     @ApiPropertyOptional()
     @IsOptional()
-    id?: number
-
-    @ApiPropertyOptional()
-    @IsOptional()
-    gard?: number
-
+    @IsNumber()
+    id_question?: number
+    
     @ApiPropertyOptional()
     @IsOptional()
     @IsString()
-    title?: string
-
+    value ?: string
+    
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsNumber()
+    percentage ?: number
 }
 
-export class ReadTestInput {
-    @ApiProperty({ type: ReadTestData })
-    @Type(() => ReadTestData)
+export class ReadAnswerInput {
+    @ApiProperty({ type:  ReadAnswerData})
+    @Type(() => ReadAnswerData)
     @ValidateNested()
-    data: ReadTestData
+    data: ReadAnswerData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()
@@ -37,5 +38,6 @@ export class ReadTestInput {
     @Type(() => SortByData)
     @ValidateNested()
     sortBy?: SortByData
-}
 
+
+}
