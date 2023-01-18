@@ -1,71 +1,64 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { doctor_dr_gender, doctor_specialization } from "@prisma/client";
+
 import { Type } from "class-transformer";
-import { IsEnum, IsNumber, IsOptional, IsPhoneNumber, IsString, ValidateNested } from "class-validator";
+import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID, MinLength, Validate, ValidateNested } from "class-validator";
 import { PaginationData } from "src/common/input/paganation.input";
 import { SortByData } from "src/common/input/sort-data.dto";
 
-class ReadDoctorData {
+class ReadUserData {
+
+
     @ApiPropertyOptional()
     @IsOptional()
     @IsNumber()
+    @IsNotEmpty()
     id?: number
 
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    username?: string
 
     @ApiPropertyOptional()
     @IsOptional()
     @IsString()
-    doctor_name? : string
+    firstname?: string
 
     @ApiPropertyOptional()
     @IsOptional()
     @IsString()
-    doctor_lastname? : string
+    lastname?: string
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsEnum(doctor_specialization)
-    specialization ?: doctor_specialization
+    @IsString()
+    gender?: string
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsNumber()
-    background ?: number
+    @IsString()
+    @IsEmail()
+    email?: string
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsEnum(doctor_dr_gender)
-    doctor_gender ? : doctor_dr_gender
+    @IsString()
+    age?: number
 
 
     @ApiPropertyOptional()
     @IsOptional()
     @IsString()
-    doctor_description ? : string
-
-    
-    @ApiPropertyOptional()
-    @IsOptional()
-    @IsString()
-    address ? : string
-    
-    @ApiPropertyOptional()
-    @IsOptional()
-    @IsPhoneNumber()
-    phonenumber ? : string
-
-
-
-
+    phoneNumber?: string
 
 }
 
-
-export class ReadDoctorInput {
-    @ApiProperty({ type: ReadDoctorData })
-    @Type(() => ReadDoctorData)
+export class ReadUserInput {
+    @ApiProperty({ type: ReadUserData })
+    @Type(() => ReadUserData)
     @ValidateNested()
-    data: ReadDoctorData
+    data: ReadUserData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()
@@ -78,3 +71,4 @@ export class ReadDoctorInput {
     @ValidateNested()
     sortBy?: SortByData
 }
+

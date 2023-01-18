@@ -41,5 +41,5 @@ export class ReadQuestionInput {
     @ApiPropertyOptional({ type: SortByData })
     @Type(() => SortByData)
     @ValidateNested()
-    sortyBy?: SortByData
+    sortBy?: SortByData
 }

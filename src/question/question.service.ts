@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import cleanDeep from 'clean-deep';
+import { createPaginationResult } from 'src/common/input/paganation.input';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateQuestionInput } from './dto/creat-questions.dto';
+import { ReadQuestionInput } from './dto/read-question.dto';
 
 @Injectable()
 export class QuestionService {
@@ -27,6 +31,31 @@ export class QuestionService {
         
         
     }
+
+
+
+
+    async readQuestion(input: ReadQuestionInput) {
+        const rawWhere = input.data || {};
+      
+        let whereClause: Prisma.questionsWhereInput = {
+            id_question : rawWhere.question_id , 
+            grade : rawWhere.grade ,
+            value : rawWhere.value
+    
+        };
+      
+        whereClause = cleanDeep(whereClause);
+      
+        const count = this.prisma.user.count({ where: whereClause });
+        const entity = this.prisma.user.findMany({
+            where: whereClause,
+            ...input?.sortBy?.convertToPrismaFilter(),
+            ...input?.pagination?.convertToPrismaFilter(),
+        });
+        return createPaginationResult({ count, entity });
+      }
+      
 
 
 

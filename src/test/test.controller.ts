@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { CreateTestInput } from './dto/creat-test.input';
 import { DeleteTestInput } from './dto/delet-test.input';
+import { ReadTestInput } from './dto/read-test.dto';
 import { TestService } from './test.service';
 
 @Controller('test')
@@ -22,6 +23,17 @@ async createTest(@Body() input: CreateTestInput ) {
 @ApiResponse({ status: 200 })
 async deletTest(@Body() input: DeleteTestInput) {
     this.testservice.delet_test(input)
+    console.log('post created');
+    
+}
+
+
+
+@Get('raedTest')
+@ApiBody({ type: ReadTestInput })
+@ApiResponse({ status: 200 })
+async raedtTest(@Body() input: ReadTestInput) {
+    this.testservice.readTest(input)
     console.log('post created');
     
 }
