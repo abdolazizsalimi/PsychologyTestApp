@@ -59,6 +59,7 @@ model test {
   id_test        Int             @unique(map: "test_pk")
   grade          Int
   title          String          @id @db.VarChar(45)
+  description    String?         @db.LongText
   test_questions test_questions?
   user_test      user_test[]
 }

@@ -4,7 +4,7 @@ import { Configuration, OpenAIApi  , CreateCompletionRequest} from "openai";
 
 
 const DEFULT_MODLE_ID = "text-davinci-003"
-
+const DEFULT_BEST = 1
 const DEFULT_TEMEP = 0.9
 const DEFULT_TOKEN = 4000 
 @Injectable()
@@ -31,6 +31,7 @@ export class ChatGptService {
                 model:DEFULT_MODLE_ID,
                 temperature : termpertuer!=undefined?termpertuer:DEFULT_TEMEP,
                 max_tokens: DEFULT_TOKEN,
+                // best_of :DEFULT_BEST
             
 
             }

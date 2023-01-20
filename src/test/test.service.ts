@@ -28,6 +28,7 @@ export class TestService {
                 title: data.title,
                 id_test : data.test_id,
                 grade : data.grade,
+                description : data.description
             
                 
 
@@ -65,7 +66,8 @@ export class TestService {
         let whereClause: Prisma.testWhereInput = {
             id_test : rawWhere.id,
             title : rawWhere.title ,
-            grade : rawWhere.gard 
+            grade : rawWhere.gard  ,
+            description : rawWhere.description
         };
       
         whereClause = cleanDeep(whereClause);

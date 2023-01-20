@@ -19,6 +19,11 @@ class ReadTestData {
     @IsString()
     title?: string
 
+
+    @ApiPropertyOptional()
+    description ?: string 
+
+
 }
 
 export class ReadTestInput {
