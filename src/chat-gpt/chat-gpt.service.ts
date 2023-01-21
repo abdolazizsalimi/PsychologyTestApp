@@ -3,8 +3,15 @@ import { Configuration, OpenAIApi, CreateCompletionRequest } from 'openai';
 
 const DEFULT_MODLE_ID = 'text-davinci-003';
 
+<<<<<<< HEAD
 const DEFULT_TEMEP = 0.9;
 const DEFULT_TOKEN = 4000;
+=======
+const DEFULT_MODLE_ID = "text-davinci-003"
+const DEFULT_BEST = 1
+const DEFULT_TEMEP = 0.9
+const DEFULT_TOKEN = 4000 
+>>>>>>> 1c5a91d7b9fc96061ad8c6cf45c844f282dc536d
 @Injectable()
 export class ChatGptService {
   private readonly openaiAPI: OpenAIApi;
@@ -32,7 +39,38 @@ export class ChatGptService {
         return data.choices;
       }
 
+<<<<<<< HEAD
       return response.data;
     } catch (error) {}
   }
+=======
+
+    async getUserAnswer(question : string , termpertuer? : number)
+    {
+
+        try {
+            const params : CreateCompletionRequest = {
+                prompt:question,
+                model:DEFULT_MODLE_ID,
+                temperature : termpertuer!=undefined?termpertuer:DEFULT_TEMEP,
+                max_tokens: DEFULT_TOKEN,
+                // best_of :DEFULT_BEST
+            
+
+            }
+
+            const response = await this.openaiAPI.createCompletion(params,)
+            const {data} = response
+            if (data.choices.length){
+                return data.choices
+            }
+
+            return response.data
+            
+        } catch (error) {
+            
+        }
+
+    }
+>>>>>>> 1c5a91d7b9fc96061ad8c6cf45c844f282dc536d
 }

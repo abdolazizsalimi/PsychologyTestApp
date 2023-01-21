@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsString, IsUUID, ValidateNested } from "class-validator";
+import { isNumber, IsString, IsUUID, ValidateNested } from "class-validator";
 
 class CreateTestData {
 
@@ -10,11 +10,19 @@ class CreateTestData {
     @IsString()
     title: string
 
+
+    
     @ApiProperty()
     test_id: number
 
+
+    
     @ApiProperty()
     grade: number
+
+    @ApiProperty()
+    description : string 
+
 
 
 }

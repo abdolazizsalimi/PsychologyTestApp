@@ -8,8 +8,11 @@ import { QuestionModule } from './question/question.module';
 import { DoctorModule } from './doctor/doctor.module';
 import { AnswerModule } from './answer/answer.module';
 import { ChatGptModule } from './chat-gpt/chat-gpt.module';
+import { SuggestionModule } from './suggestion/suggestion.module';
+import { AnalysModule } from './analys/analys.module';
 
 @Module({
+<<<<<<< HEAD
   imports: [
     AuthModule,
     PrismaModule,
@@ -19,6 +22,9 @@ import { ChatGptModule } from './chat-gpt/chat-gpt.module';
     AnswerModule,
     ChatGptModule,
   ],
+=======
+  imports: [AuthModule, PrismaModule, TestModule, QuestionModule, DoctorModule, AnswerModule, ChatGptModule, SuggestionModule, AnalysModule],
+>>>>>>> 1c5a91d7b9fc96061ad8c6cf45c844f282dc536d
   controllers: [AppController],
   providers: [AppService],
 })

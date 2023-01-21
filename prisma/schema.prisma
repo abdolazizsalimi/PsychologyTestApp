@@ -59,6 +59,7 @@ model test {
   id_test        Int             @unique(map: "test_pk")
   grade          Int
   title          String          @id @db.VarChar(45)
+  description    String?         @db.LongText
   test_questions test_questions?
   user_test      user_test[]
 }
@@ -85,6 +86,7 @@ model user {
   password       String           @db.VarChar(256)
   phonenumber    String           @unique(map: "phonenumber_UNIQUE") @db.VarChar(45)
   role           user_role        @default(member)
+  analys         analys[]
   user_questions user_questions[]
   user_test      user_test[]
 }
@@ -119,6 +121,20 @@ model answer {
   questions   questions @relation(fields: [id_question], references: [id_question], onDelete: NoAction, onUpdate: NoAction, map: "id_Q")
 
   @@index([id_question], map: "id_Q_idx")
+}
+
+model analys {
+  id_analys Int     @id @default(autoincrement())
+  id_user   Int?
+  value     String? @db.LongText
+  user      user?   @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "id_userx")
+
+  @@index([id_user], map: "id_userx_idx")
+}
+
+model suggestion {
+  id_suggestion Int    @id @default(autoincrement())
+  value         String @db.LongText
 }
 
 enum doctor_specialization {

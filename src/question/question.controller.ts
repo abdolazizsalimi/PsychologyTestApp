@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateQuestionInput } from './dto/creat-questions.dto';
 import { ReadQuestionInput } from './dto/read-question.dto';
 import { QuestionService } from './question.service';
@@ -18,11 +18,11 @@ async createQuestions (@Body() input : CreateQuestionInput){
 }
 
 
-@Get('readquestions')
-@ApiBody({type: ReadQuestionInput})
+@Post('readquestions')
+@ApiQuery({type: ReadQuestionInput})
 @ApiResponse({ status: 200 })
-async readQuestions (@Body() input : ReadQuestionInput){
-    this.qestionservice.readQuestion(input);
+async readQuestions (@Query() input : ReadQuestionInput){
+   return this.qestionservice.readQuestion(input);
 }
 
 

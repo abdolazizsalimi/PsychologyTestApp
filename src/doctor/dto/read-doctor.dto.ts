@@ -62,10 +62,10 @@ class ReadDoctorData {
 
 
 export class ReadDoctorInput {
-    @ApiProperty({ type: ReadDoctorData })
+    @ApiPropertyOptional({ type: ReadDoctorData })
     @Type(() => ReadDoctorData)
     @ValidateNested()
-    data: ReadDoctorData
+    data?: ReadDoctorData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()

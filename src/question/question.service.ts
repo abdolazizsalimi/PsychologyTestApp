@@ -45,13 +45,13 @@ export class QuestionService {
     
         };
       
-        whereClause = cleanDeep(whereClause);
+        // whereClause = cleanDeep(whereClause);
       
-        const count = this.prisma.user.count({ where: whereClause });
-        const entity = this.prisma.user.findMany({
+        const count = this.prisma.questions.count({ where: whereClause });
+        const entity = this.prisma.questions.findMany({
             where: whereClause,
-            ...input?.sortBy?.convertToPrismaFilter(),
-            ...input?.pagination?.convertToPrismaFilter(),
+            // ...input?.sortBy?.convertToPrismaFilter(),
+            // ...input?.pagination?.convertToPrismaFilter(),
         });
         return createPaginationResult({ count, entity });
       }

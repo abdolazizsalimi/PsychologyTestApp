@@ -19,13 +19,18 @@ class ReadTestData {
     @IsString()
     title?: string
 
+
+    @ApiPropertyOptional()
+    description ?: string 
+
+
 }
 
 export class ReadTestInput {
-    @ApiProperty({ type: ReadTestData })
+    @ApiPropertyOptional({ type: ReadTestData })
     @Type(() => ReadTestData)
     @ValidateNested()
-    data: ReadTestData
+    data?: ReadTestData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()

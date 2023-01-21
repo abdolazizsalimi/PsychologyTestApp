@@ -23,10 +23,10 @@ class ReadAnswerData {
 }
 
 export class ReadAnswerInput {
-    @ApiProperty({ type:  ReadAnswerData})
+    @ApiPropertyOptional({ type:  ReadAnswerData})
     @Type(() => ReadAnswerData)
     @ValidateNested()
-    data: ReadAnswerData
+    data?: ReadAnswerData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()
