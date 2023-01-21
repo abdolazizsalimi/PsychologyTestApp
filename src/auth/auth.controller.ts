@@ -27,7 +27,7 @@ export class AuthController {
 
   @Get('me')
   @ApiResponse({ status: 200 })
-  async me(@GetUserId() userId: string) {
+  async me(@GetUserId() userId: number) {
     return await this.authservice.me(userId)
   }
 
