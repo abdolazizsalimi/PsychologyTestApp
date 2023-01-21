@@ -10,171 +10,152 @@ import { createPaginationResult } from 'src/common/input/paganation.input';
 import cleanDeep from 'clean-deep';
 import { JwtService } from '@nestjs/jwt';
 import { genUID } from 'src/utils/gUID';
-var crypto = require('crypto'); 
-
-
-
+var crypto = require('crypto');
 
 @Injectable()
 export class AuthService {
-  
   constructor(
     private prisma: PrismaService,
     private readonly jwtService: JwtService,
-    
-) { }
+  ) {}
 
-    getAuth(): string {
-        return 'Hello World!';
-      }
+  getAuth(): string {
+    return 'Hello World!';
+  }
 
+  async login(input: LoginInputDto) {
+    const Userdata = await this.prisma.user.findUnique({
+      where: {
+        username: input.username,
+      },
+    });
 
-    async login(input :LoginInputDto) {
-      
-      const Userdata = await this.prisma.user.findUnique({
-        where: {
-          username:input.username,
-        },
-      });
+    var hash = crypto
+      .pbkdf2Sync(input.password, 'salt', 1000, 64, `sha512`)
+      .toString('hex');
 
-      var hash = crypto.pbkdf2Sync(input.password, 'salt', 1000, 64 , `sha512` ).toString('hex');
+    if (hash === Userdata.password) {
+      const payload = {
+        username: input.username,
+        password: input.password,
+        id: genUID(),
+      };
 
-      if (hash === Userdata.password ){
-        const payload = {
-            username: input.username,
-            password: input.password,
-            id :genUID()
-          };
-          
-          return {
-            access_token: this.jwtService.sign(payload),
-            user: payload,
-          };
-
-      } else {
-
-        return {
-          error : 'password is wrong ! '
-        }
-
-      }
-
-
+      return {
+        access_token: this.jwtService.sign(payload),
+        user: payload,
+      };
+    } else {
+      return {
+        error: 'password is wrong ! ',
+      };
     }
+  }
 
-
-    async updateUser(input : UpdateUserInput) { 
-      const { data } = input
-      const username = data.username.toLowerCase()
-      const updateUser = await this.prisma.user.update({
-        where: {
-          username : username ,
-        },
-        data: {
-          firstname: data.firstname.toLocaleLowerCase(), 
-          lastname: data.lastname.toLocaleLowerCase() || undefined, 
-          email: data.email.toLowerCase() || undefined,
-        },
-      })
-      return updateUser
-
-
-
-    }
-
-
-
-
-async createUser(input: CreateUserInput) {
-  const { data } = input
-  const username = data.username.toLowerCase()
-  const email = data.email.toLowerCase()
-  await this.verifyIfNewUserIsNotDuplicate(username, email)
-  await this.verifyPasswordEqualToConfirmPassword(data.password, data.confirmPassword)
-  const hashedPassword = await this.createHashedPassword(data.password)
-
-
-  const user = await this.prisma.user.create({
+  async updateUser(input: UpdateUserInput) {
+    const { data } = input;
+    const username = data.username.toLowerCase();
+    const updateUser = await this.prisma.user.update({
+      where: {
+        username: username,
+      },
       data: {
-          firstname: data.firstname,
-          lastname: data.lastname,
-          password: hashedPassword,
-          username: username,
-          phonenumber: data.phoneNumber,
-          email: email,
-          age: data.age,
-          gender: data.gender,
-          id_user: randomInt(10000000),
-          role : data.role
-      }
-  })
-  return user
-}
+        firstname: data.firstname.toLocaleLowerCase(),
+        lastname: data.lastname.toLocaleLowerCase() || undefined,
+        email: data.email.toLowerCase() || undefined,
+      },
+    });
+    return updateUser;
+  }
 
+  async createUser(input: CreateUserInput) {
+    const { data } = input;
+    const username = data.username.toLowerCase();
+    const email = data.email.toLowerCase();
+    await this.verifyIfNewUserIsNotDuplicate(username, email);
+    await this.verifyPasswordEqualToConfirmPassword(
+      data.password,
+      data.confirmPassword,
+    );
+    const hashedPassword = await this.createHashedPassword(data.password);
 
+    const user = await this.prisma.user.create({
+      data: {
+        firstname: data.firstname,
+        lastname: data.lastname,
+        password: hashedPassword,
+        username: username,
+        phonenumber: data.phoneNumber,
+        email: email,
+        age: data.age,
+        gender: data.gender,
+        id_user: randomInt(10000000),
+        role: data.role,
+      },
+    });
+    return user;
+  }
 
-async readUser(input: ReadUserInput) {
-  const rawWhere = input.data || {};
+  async readUser(input: ReadUserInput) {
+    const rawWhere = input.data || {};
 
-  let whereClause: Prisma.userWhereInput = {
+    let whereClause: Prisma.userWhereInput = {
       id_user: rawWhere.id,
       username: rawWhere.username,
       email: rawWhere.email,
-      lastname : rawWhere.lastname,
-      firstname : rawWhere.firstname,
+      lastname: rawWhere.lastname,
+      firstname: rawWhere.firstname,
       phonenumber: rawWhere.phoneNumber,
-      role : rawWhere.role
-  };
+      role: rawWhere.role,
+    };
 
-  whereClause = cleanDeep(whereClause);
+    whereClause = cleanDeep(whereClause);
 
-  const count = this.prisma.user.count({ where: whereClause });
-  const entity = this.prisma.user.findMany({
+    const count = this.prisma.user.count({ where: whereClause });
+    const entity = this.prisma.user.findMany({
       where: whereClause,
       ...input?.sortBy?.convertToPrismaFilter(),
       ...input?.pagination?.convertToPrismaFilter(),
-  });
-  return createPaginationResult({ count, entity });
-}
-
-
-// verify(token: string): boolean {
-//   try {
-//     this.jwtService.verify(token.split(' ')[1]);
-//   } catch (err) {
-//     return false;
-//   }
-//   return true;
-// }
-
-
-private async createHashedPassword(password: string) {
-  return await crypto.pbkdf2Sync(password, 'salt', 1000, 64 ,`sha512`).toString('hex');
-}
-
-
-private async verifyIfNewUserIsNotDuplicate(username: string, email: string) {
-  if (username) {
-      const duplicateUsername = await this.prisma.user.findFirst({ where: { username } })
-      if (duplicateUsername)
-          console.log("error in verifyUserIsNotDuplicate")
+    });
+    return createPaginationResult({ count, entity });
   }
 
+  // verify(token: string): boolean {
+  //   try {
+  //     this.jwtService.verify(token.split(' ')[1]);
+  //   } catch (err) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
-  if (email) {
-      const duplicateEmail = await this.prisma.user.findFirst({ where: { email } })
-      if (duplicateEmail)
-          console.log("error in verifyUserIsNotDuplicate")
+  private async createHashedPassword(password: string) {
+    return await crypto
+      .pbkdf2Sync(password, 'salt', 1000, 64, `sha512`)
+      .toString('hex');
+  }
+
+  private async verifyIfNewUserIsNotDuplicate(username: string, email: string) {
+    if (username) {
+      const duplicateUsername = await this.prisma.user.findFirst({
+        where: { username },
+      });
+      if (duplicateUsername) console.log('error in verifyUserIsNotDuplicate');
+    }
+
+    if (email) {
+      const duplicateEmail = await this.prisma.user.findFirst({
+        where: { email },
+      });
+      if (duplicateEmail) console.log('error in verifyUserIsNotDuplicate');
+    }
+  }
+
+  async verifyPasswordEqualToConfirmPassword(
+    newPassword: string,
+    confirmPassword: string,
+  ) {
+    if (newPassword != confirmPassword)
+      console.log('verifyPasswordEqualToConfirmPassword');
   }
 }
-
-
-
-async verifyPasswordEqualToConfirmPassword(newPassword: string, confirmPassword: string) {
-if (newPassword != confirmPassword)
-    console.log("verifyPasswordEqualToConfirmPassword")
-}
-
-
-}
-
