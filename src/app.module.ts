@@ -9,9 +9,16 @@ import { DoctorModule } from './doctor/doctor.module';
 import { AnswerModule } from './answer/answer.module';
 import { ChatGptModule } from './chat-gpt/chat-gpt.module';
 
-
 @Module({
-  imports: [AuthModule, PrismaModule, TestModule, QuestionModule, DoctorModule, AnswerModule, ChatGptModule],
+  imports: [
+    AuthModule,
+    PrismaModule,
+    TestModule,
+    QuestionModule,
+    DoctorModule,
+    AnswerModule,
+    ChatGptModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

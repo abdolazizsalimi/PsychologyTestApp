@@ -10,9 +10,8 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt-strategy';
 
 @Module({
-
   controllers: [AuthController],
-  providers: [PrismaService , AuthService , JwtStrategy],
+  providers: [PrismaService, AuthService, JwtStrategy],
   imports: [
     ConfigModule.forRoot({ cache: true, load: [jwtConfig] }),
     PassportModule,
@@ -24,8 +23,7 @@ import { JwtStrategy } from './jwt-strategy';
       }),
       inject: [ConfigService],
     }),
-    PrismaModule , 
+    PrismaModule,
   ],
-  
 })
 export class AuthModule {}

@@ -16,9 +16,8 @@ async function bootstrap() {
 
   await app.listen(3001);
 
-  function setupCors(app:INestApplication){
+  function setupCors(app: INestApplication) {
     app.enableCors();
   }
-  
 }
 bootstrap();
