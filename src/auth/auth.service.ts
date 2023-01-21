@@ -105,8 +105,6 @@ export class AuthService {
   }
 
   async readUser(input: ReadUserInput) {
-    console.log(input)
-
     const rawWhere = input.data || {}
 
     let whereClause: Prisma.userWhereInput = {
@@ -126,11 +124,6 @@ export class AuthService {
       where: whereClause,
       // ...input?.sortBy?.convertToPrismaFilter(),
       // ...input?.pagination?.convertToPrismaFilter(),
-    })
-    console.log({
-      where: whereClause,
-      ...input?.sortBy?.convertToPrismaFilter(),
-      ...input?.pagination?.convertToPrismaFilter(),
     })
 
     return createPaginationResult({ count, entity })
