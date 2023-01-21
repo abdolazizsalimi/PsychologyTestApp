@@ -1,12 +1,20 @@
-import { Body, Controller, Get, Post, Query, Req , Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { CreateUserInput } from 'src/auth/dtos/CreateUser.dto';
-import { LoginInputDto } from 'src/auth/dtos/LoginUser.dto';
-import { ReadUserInput } from 'src/auth/dtos/read-user.dto';
-import { UpdateUserInput } from 'src/auth/dtos/UpdateUser.dto';
-import { AuthService } from './auth.service';
-import { GetUserId } from './decorator/get-user-id.decorator';
-
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  Request,
+  UseGuards,
+} from '@nestjs/common'
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger'
+import { CreateUserInput } from 'src/auth/dtos/CreateUser.dto'
+import { LoginInputDto } from 'src/auth/dtos/LoginUser.dto'
+import { ReadUserInput } from 'src/auth/dtos/read-user.dto'
+import { UpdateUserInput } from 'src/auth/dtos/UpdateUser.dto'
+import { AuthService } from './auth.service'
+import { GetUserId } from './decorator/get-user-id.decorator'
 
 @Controller('auth/')
 export class AuthController {
@@ -39,19 +47,10 @@ export class AuthController {
     return await this.authservice.updateUser(input)
   }
 
-<<<<<<< HEAD
-  @Get('readUser')
-  @ApiBody({ type: ReadUserInput })
-  @ApiResponse({ status: 200 })
-  async readUser(@Body() input: ReadUserInput) {
-    return await this.authservice.readUser(input)
-=======
-
-  @Post("readUser")
+  @Post('readUser')
   @ApiQuery({ type: ReadUserInput })
   @ApiResponse({ status: 200 })
   async readUser(@Query() input: ReadUserInput) {
-      return await this.authservice.readUser(input)
->>>>>>> 1c5a91d7b9fc96061ad8c6cf45c844f282dc536d
+    return await this.authservice.readUser(input)
   }
 }

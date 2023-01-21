@@ -105,8 +105,9 @@ model user_questions {
 model user_test {
   id_test Int
   id_user Int
-  user    user @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "id_user_fk")
-  test    test @relation(fields: [id_test], references: [id_test], onDelete: NoAction, onUpdate: NoAction, map: "idjaksdh")
+
+  user user @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "id_user_fk")
+  test test @relation(fields: [id_test], references: [id_test], onDelete: NoAction, onUpdate: NoAction, map: "idjaksdh")
 
   @@id([id_test, id_user])
   @@index([id_test], map: "id_test_fk_idx")

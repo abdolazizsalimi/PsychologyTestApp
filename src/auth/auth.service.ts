@@ -104,8 +104,9 @@ export class AuthService {
     return user
   }
 
-<<<<<<< HEAD
   async readUser(input: ReadUserInput) {
+    console.log(input)
+
     const rawWhere = input.data || {}
 
     let whereClause: Prisma.userWhereInput = {
@@ -118,70 +119,21 @@ export class AuthService {
       role: rawWhere.role,
     }
 
-    whereClause = cleanDeep(whereClause)
+    // whereClause = cleanDeep(whereClause);
 
     const count = this.prisma.user.count({ where: whereClause })
     const entity = this.prisma.user.findMany({
       where: whereClause,
-      ...input?.sortBy?.convertToPrismaFilter(),
-      ...input?.pagination?.convertToPrismaFilter(),
-    })
-    return createPaginationResult({ count, entity })
-=======
-async readUser(input: ReadUserInput) {
-  console.log(input);
-  
-  const rawWhere = input.data || {};
-  
-  let whereClause: Prisma.userWhereInput = {
-    id_user: rawWhere.id,
-    username: rawWhere.username,
-    email: rawWhere.email,
-    lastname : rawWhere.lastname,
-    firstname : rawWhere.firstname,
-      phonenumber: rawWhere.phoneNumber,
-      role : rawWhere.role
-    };
-
-    // whereClause = cleanDeep(whereClause);
-    
-    const count = this.prisma.user.count({ where: whereClause });
-    const entity = this.prisma.user.findMany({
-      where: whereClause,
       // ...input?.sortBy?.convertToPrismaFilter(),
       // ...input?.pagination?.convertToPrismaFilter(),
-    });
+    })
     console.log({
       where: whereClause,
       ...input?.sortBy?.convertToPrismaFilter(),
       ...input?.pagination?.convertToPrismaFilter(),
-    });
+    })
 
-  return createPaginationResult({ count, entity });
-}
-
-
-// verify(token: string): boolean {
-//   try {
-//     this.jwtService.verify(token.split(' ')[1]);
-//   } catch (err) {
-//     return false;
-//   }
-//   return true;
-// }
-
-
-private async createHashedPassword(password: string) {
-  return await crypto.pbkdf2Sync(password, 'salt', 1000, 64 ,`sha512`).toString('hex');
-}
-
-
-private async verifyIfNewUserIsNotDuplicate(username: string, email: string) {
-  if (username) {
-      const duplicateUsername = await this.prisma.user.findFirst({ where: { username } })
-      if (duplicateUsername)
-          console.log("error in verifyUserIsNotDuplicate")
->>>>>>> 1c5a91d7b9fc96061ad8c6cf45c844f282dc536d
+    return createPaginationResult({ count, entity })
   }
 
   // verify(token: string): boolean {
@@ -206,6 +158,15 @@ private async verifyIfNewUserIsNotDuplicate(username: string, email: string) {
       })
       if (duplicateUsername) console.log('error in verifyUserIsNotDuplicate')
     }
+
+    // verify(token: string): boolean {
+    //   try {
+    //     this.jwtService.verify(token.split(' ')[1]);
+    //   } catch (err) {
+    //     return false;
+    //   }
+    //   return true;
+    // }
 
     if (email) {
       const duplicateEmail = await this.prisma.user.findFirst({
