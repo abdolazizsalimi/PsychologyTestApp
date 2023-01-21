@@ -63,10 +63,10 @@ export class AnswerService {
 
         };
       
-        whereClause = cleanDeep(whereClause);
+        // whereClause = cleanDeep(whereClause);
       
-        const count = this.prisma.user.count({ where: whereClause });
-        const entity = this.prisma.user.findMany({
+        const count = this.prisma.answer.count({ where: whereClause });
+        const entity = this.prisma.answer.findMany({
             where: whereClause,
             ...input?.sortBy?.convertToPrismaFilter(),
             ...input?.pagination?.convertToPrismaFilter(),

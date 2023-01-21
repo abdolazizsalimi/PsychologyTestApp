@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { AnswerService } from './answer.service';
 import { CreateAnswerInput } from './dto/create-answer.dto';
 import { DeleteAnswerInput } from './dto/delet-answer.dto';
@@ -26,11 +26,11 @@ async AnswerDelet (@Body() input : DeleteAnswerInput){
     this.answerservice.delet_answer(input);
 
 }
-@Get('readanswer')
-@ApiBody({type: DeleteAnswerInput})
+@Post('readanswer')
+@ApiQuery({type: ReadAnswerInput})
 @ApiResponse({ status: 200 })
-async AnswerRead (@Body() input : ReadAnswerInput){
-    this.answerservice.readAnswer(input);
+async AnswerRead (@Query() input : ReadAnswerInput){
+   return this.answerservice.readAnswer(input);
 
 }
 

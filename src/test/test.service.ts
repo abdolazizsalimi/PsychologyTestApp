@@ -29,10 +29,6 @@ export class TestService {
                 id_test : data.test_id,
                 grade : data.grade,
                 description : data.description
-            
-                
-
-            
             }
 
         }
@@ -61,7 +57,10 @@ export class TestService {
     }
 
     async readTest(input: ReadTestInput) {
+        console.log('im')
         const rawWhere = input.data || {};
+        console.log(rawWhere);
+        
       
         let whereClause: Prisma.testWhereInput = {
             id_test : rawWhere.id,
@@ -70,14 +69,16 @@ export class TestService {
             description : rawWhere.description
         };
       
-        whereClause = cleanDeep(whereClause);
+        // whereClause = cleanDeep(whereClause);
       
-        const count = this.prisma.user.count({ where: whereClause });
-        const entity = this.prisma.user.findMany({
+        const count = this.prisma.test.count({ where: whereClause });
+        const entity = this.prisma.test.findMany({
             where: whereClause,
-            ...input?.sortBy?.convertToPrismaFilter(),
-            ...input?.pagination?.convertToPrismaFilter(),
+            // ...input?.sortBy?.convertToPrismaFilter(),
+            // ...input?.pagination?.convertToPrismaFilter(),
         });
+
+        console.log(entity)
         return createPaginationResult({ count, entity });
       }
       

@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Req , Request, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query, Req , Request, UseGuards } from '@nestjs/common';
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateUserInput } from 'src/auth/dtos/CreateUser.dto';
 import { LoginInputDto } from 'src/auth/dtos/LoginUser.dto';
 import { ReadUserInput } from 'src/auth/dtos/read-user.dto';
@@ -36,10 +36,10 @@ export class AuthController {
   }
 
 
-  @Get("readUser")
-  @ApiBody({ type: ReadUserInput })
+  @Post("readUser")
+  @ApiQuery({ type: ReadUserInput })
   @ApiResponse({ status: 200 })
-  async readUser(@Body() input: ReadUserInput) {
+  async readUser(@Query() input: ReadUserInput) {
       return await this.authservice.readUser(input)
   }
 

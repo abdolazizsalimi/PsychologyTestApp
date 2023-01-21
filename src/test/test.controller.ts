@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateTestInput } from './dto/creat-test.input';
 import { DeleteTestInput } from './dto/delet-test.input';
 import { ReadTestInput } from './dto/read-test.dto';
@@ -29,12 +29,13 @@ async deletTest(@Body() input: DeleteTestInput) {
 
 
 
-@Get('raedTest')
-@ApiBody({ type: ReadTestInput })
+@Post('raedTest')
+@ApiQuery({ type: ReadTestInput })
 @ApiResponse({ status: 200 })
 async raedtTest(@Body() input: ReadTestInput) {
-    this.testservice.readTest(input)
-    console.log('post created');
+    console.log('r');
+    console.log('read test');
+    return this.testservice.readTest(input)
     
 }
 

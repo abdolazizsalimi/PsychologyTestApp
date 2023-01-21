@@ -27,10 +27,10 @@ class ReadQuestionsData {
 }
 
 export class ReadQuestionInput {
-    @ApiProperty({ type: ReadQuestionsData })
+    @ApiPropertyOptional({ type: ReadQuestionsData })
     @Type(() => ReadQuestionsData)
     @ValidateNested()
-    data: ReadQuestionsData
+    data?: ReadQuestionsData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()

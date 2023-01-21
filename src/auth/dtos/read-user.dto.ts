@@ -62,10 +62,10 @@ class ReadUserData {
 }
 
 export class ReadUserInput {
-    @ApiProperty({ type: ReadUserData })
+    @ApiPropertyOptional({ type: ReadUserData })
     @Type(() => ReadUserData)
     @ValidateNested()
-    data: ReadUserData
+    data?: ReadUserData
 
     @ApiPropertyOptional({ type: PaginationData })
     @IsOptional()

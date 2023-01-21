@@ -8,10 +8,12 @@ import { QuestionModule } from './question/question.module';
 import { DoctorModule } from './doctor/doctor.module';
 import { AnswerModule } from './answer/answer.module';
 import { ChatGptModule } from './chat-gpt/chat-gpt.module';
+import { SuggestionModule } from './suggestion/suggestion.module';
+import { AnalysModule } from './analys/analys.module';
 
 
 @Module({
-  imports: [AuthModule, PrismaModule, TestModule, QuestionModule, DoctorModule, AnswerModule, ChatGptModule],
+  imports: [AuthModule, PrismaModule, TestModule, QuestionModule, DoctorModule, AnswerModule, ChatGptModule, SuggestionModule, AnalysModule],
   controllers: [AppController],
   providers: [AppService],
 })

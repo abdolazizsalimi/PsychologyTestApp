@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { DoctorService } from './doctor.service';
 import { CreatDoctorInput } from './dto/creat-doctor.dto';
 import { DeleteDoctorInput } from './dto/delet-doctor.dto';
@@ -37,10 +37,10 @@ export class DoctorController {
     }
 
 
-    @Get("readDoctor")
-    @ApiBody({ type: ReadDoctorInput })
+    @Post("readDoctor")
+    @ApiQuery({ type: ReadDoctorInput })
     @ApiResponse({ status: 200 })
-    async raedUser(@Body() input:ReadDoctorInput ) {
+    async raedUser(@Query() input:ReadDoctorInput ) {
         return await this.doctorservice.readDoctor(input)
     }
 }

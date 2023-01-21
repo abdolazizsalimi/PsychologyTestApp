@@ -114,26 +114,34 @@ async createUser(input: CreateUserInput) {
 
 
 async readUser(input: ReadUserInput) {
+  console.log(input);
+  
   const rawWhere = input.data || {};
-
+  
   let whereClause: Prisma.userWhereInput = {
-      id_user: rawWhere.id,
-      username: rawWhere.username,
-      email: rawWhere.email,
-      lastname : rawWhere.lastname,
-      firstname : rawWhere.firstname,
+    id_user: rawWhere.id,
+    username: rawWhere.username,
+    email: rawWhere.email,
+    lastname : rawWhere.lastname,
+    firstname : rawWhere.firstname,
       phonenumber: rawWhere.phoneNumber,
       role : rawWhere.role
-  };
+    };
 
-  whereClause = cleanDeep(whereClause);
-
-  const count = this.prisma.user.count({ where: whereClause });
-  const entity = this.prisma.user.findMany({
+    // whereClause = cleanDeep(whereClause);
+    
+    const count = this.prisma.user.count({ where: whereClause });
+    const entity = this.prisma.user.findMany({
+      where: whereClause,
+      // ...input?.sortBy?.convertToPrismaFilter(),
+      // ...input?.pagination?.convertToPrismaFilter(),
+    });
+    console.log({
       where: whereClause,
       ...input?.sortBy?.convertToPrismaFilter(),
       ...input?.pagination?.convertToPrismaFilter(),
-  });
+    });
+
   return createPaginationResult({ count, entity });
 }
 
