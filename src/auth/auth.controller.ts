@@ -5,6 +5,7 @@ import { LoginInputDto } from 'src/auth/dtos/LoginUser.dto';
 import { ReadUserInput } from 'src/auth/dtos/read-user.dto';
 import { UpdateUserInput } from 'src/auth/dtos/UpdateUser.dto';
 import { AuthService } from './auth.service';
+import { GetUserId } from './decorator/get-user-id.decorator';
 
 
 @Controller('auth/')
