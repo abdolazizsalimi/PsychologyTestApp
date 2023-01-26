@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id_admin     Int            @id
+  username     String         @db.VarChar(64)
+  admin_doctor admin_doctor[]
+  admin_test   admin_test[]
+}
+
+model admin_doctor {
+  id_admin  Int
+  id_doctor Int
+  admin     admin  @relation(fields: [id_admin], references: [id_admin], onDelete: NoAction, onUpdate: NoAction, map: "admin_doctor_admin_id_admin_fk")
+  doctor    doctor @relation(fields: [id_doctor], references: [id_doctor], onDelete: NoAction, onUpdate: NoAction, map: "admin_doctor_doctor_id_doctor_fk")
+
+  @@id([id_admin, id_doctor])
+  @@index([id_doctor], map: "admin_doctor_doctor_id_doctor_fk")
+}
+
+model admin_test {
+  id_test  Int
+  id_admin Int
+  admin    admin @relation(fields: [id_admin], references: [id_admin], onDelete: NoAction, onUpdate: NoAction, map: "admin_test_admin_id_admin_fk")
+
+  @@id([id_test, id_admin])
+  @@index([id_admin], map: "admin_test_admin_id_admin_fk")
+}
+
+model doctor {
+  id_doctor      Int                   @id
+  dr_name        String                @db.VarChar(45)
+  dr_lastname    String                @db.VarChar(45)
+  specialization doctor_specialization
+  background     Int?
+  dr_gender      doctor_dr_gender?
+  description    String?               @db.LongText
+  phoneNumber    String?               @db.VarChar(11)
+  address        String?               @db.VarChar(255)
+  admin_doctor   admin_doctor[]
+}
+
+model questions {
+  id_question    Int              @id
+  grade          Decimal          @db.Decimal(4, 0)
+  value          String           @unique(map: "value_UNIQUE") @db.VarChar(255)
+  answer         answer[]
+  test_questions test_questions[]
+  user_questions user_questions[]
+}
+
+model test {
+  id_test        Int             @unique(map: "test_pk")
+  grade          Int
+  title          String          @id @db.VarChar(45)
+  description    String?         @db.LongText
+  test_questions test_questions?
+  user_test      user_test[]
+}
+
+model test_questions {
+  id_test      Int        @id
+  id_questions Int?
+  questions    questions? @relation(fields: [id_questions], references: [id_question], onDelete: NoAction, onUpdate: NoAction, map: "id_questions_fk")
+  test         test       @relation(fields: [id_test], references: [id_test], onDelete: NoAction, onUpdate: NoAction, map: "id_test_qfk")
+
+  @@index([id_questions], map: "id_questions_fk_idx")
+  @@index([id_test], map: "id_test_qfk_idx")
+}
+
+model user {
+  id_user        Int              @id @unique(map: "id_user_UNIQUE")
+  firstname      String           @db.VarChar(45)
+  lastname       String           @db.VarChar(45)
+  age            Int
+  birthday       DateTime?        @db.Date
+  gender         String           @db.VarChar(1)
+  email          String           @unique(map: "email_UNIQUE") @db.VarChar(64)
+  username       String           @unique(map: "username_UNIQUE") @db.VarChar(45)
+  password       String           @db.VarChar(256)
+  phonenumber    String           @unique(map: "phonenumber_UNIQUE") @db.VarChar(45)
+  role           user_role        @default(member)
+  analys         analys[]
+  user_questions user_questions[]
+  user_test      user_test[]
+}
+
+model user_questions {
+  id_user      Int
+  id_questions Int
+  questions    questions @relation(fields: [id_questions], references: [id_question], onDelete: NoAction, onUpdate: NoAction, map: "id_questionsfk")
+  user         user      @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "id_userfk")
+
+  @@id([id_user, id_questions])
+  @@index([id_questions], map: "id_questionsfk_idx")
+  @@index([id_user], map: "id_userfk_idx")
+}
+
+model user_test {
+  id_test Int
+  id_user Int
+
+  user user @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "id_user_fk")
+  test test @relation(fields: [id_test], references: [id_test], onDelete: NoAction, onUpdate: NoAction, map: "idjaksdh")
+
+  @@id([id_test, id_user])
+  @@index([id_test], map: "id_test_fk_idx")
+  @@index([id_user], map: "id_user_idx")
+}
+
+model answer {
+  idanswer    Int       @id @default(autoincrement())
+  value       String?   @db.MediumText
+  id_question Int
+  precentage  Int
+  questions   questions @relation(fields: [id_question], references: [id_question], onDelete: NoAction, onUpdate: NoAction, map: "id_Q")
+
+  @@index([id_question], map: "id_Q_idx")
+}
+
+model analys {
+  id_analys Int     @id @default(autoincrement())
+  id_user   Int?
+  value     String? @db.LongText
+  user      user?   @relation(fields: [id_user], references: [id_user], onDelete: NoAction, onUpdate: NoAction, map: "id_userx")
+
+  @@index([id_user], map: "id_userx_idx")
+}
+
+model suggestion {
+  id_suggestion Int    @id @default(autoincrement())
+  value         String @db.LongText
+}
+
+enum doctor_specialization {
+  general
+  subspecialty
+  Specialty
+}
+
+enum doctor_dr_gender {
+  F
+  M
+}
+
+enum user_role {
+  member
+  admin
+}
